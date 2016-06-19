@@ -6,21 +6,24 @@ var firstTrain;
 var frequency;
 
 //FUNCTIONS
+function displayData(childSnapshot) {
+    console.log(childSnapshot.val().name);
+    console.log(childSnapshot.val().destination);
+    console.log(childSnapshot.val().firstTrain);
+    console.log(childSnapshot.val().frequency);
+    
+}
 
 
 $(document).ready(function() {
 //Firebase watcher + initial loader HINT: .on("value")
-dataRef.on("value", function(snapshot) {
+dataRef.on("value", function(childSnapshot) {
 
-  var train = snapshot.val();
-  // Log everything that's coming out of snapshot
-  console.log(train);
 
-  // Change the HTML to reflect
-  $("#namedisplay").html(snapshot.val().name);
-  $("#emaildisplay").html(snapshot.val().email);
-  $("#agedisplay").html(snapshot.val().age);
-  $("#commentdisplay").html(snapshot.val().comment);
+  $("#nameDisplay").html(childSnapshot.val().name);
+  $("#destinationDisplay").html(childSnapshot.val().destination);
+  $("#frequencyDisplay").html(childSnapshot.val().frequency);
+  
 
 
 // Handle the errors
@@ -48,7 +51,15 @@ $("#submit-btn").on("click", function(){
    return false;
 });
 
-/*
+dataRef.on("child_added", function(childSnapshot) {
+
+    displayData(childSnapshot);
+   
+});
+
+
+
+
 dataRef.on("child_added", function(childSnapshot) {
 
     displayData(childSnapshot);
@@ -57,26 +68,11 @@ dataRef.on("child_added", function(childSnapshot) {
 
 dataRef.orderByChild("dateAdded").on("child_added", function(snapshot){
     
-    $("#nameDisplay").html(snapshot.name.val());
-    $("#destinationDisplay").html(snapshot.destination.val());
-    $("#firstTrainDisplay").html(snapshot.firstTrain.val());
-    $("#frequencyDisplay").html(snapshot.frequency.val());
+    $("#nameDisplay").html(snapshot.val().name);
+    $("#destinationDisplay").html(snapshot.val().destination);
+    $("#firstTrainDisplay").html(snapshot.val().firstTrain);
+    $("#frequencyDisplay").html(snapshot.val().frequency);
   });
 
-    //full list of items to the well (well is from recentUser app)
-
-    $('#full-member-list').append(
-        "<div class='well'><span id='name'> " + childSnapshot.val().name+" </span><span id="role"
-        + childSnapshot.val().startDate+" </span><span id="role"
-
-
-
-function displayData(childSnapshot) {
-    console.log(childSnapshot.name.val);
-    console.log(childSnapshot.destination.val);
-    console.log(childSnapshot.firstTrain.val);
-    console.log(childSnapshot.frequency.val);
     
-}
-*/
 });
