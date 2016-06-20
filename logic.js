@@ -7,6 +7,8 @@ var name;
 var destination;
 var firstTrain;
 var frequency;
+var now;
+
 
 //FUNCTIONS
 function displayData(childSnapshot) {
@@ -16,6 +18,7 @@ function displayData(childSnapshot) {
     console.log(childSnapshot.val().frequency);
     
 }
+
 
 
 $(document).ready(function() {
@@ -52,8 +55,32 @@ dataRef.orderByChild("dateAdded").on("child_added", function(snapshot){
     var trainStart = snapshot.val().firstTrain;
     var trainFreq = snapshot.val().frequency;
 
+//Calculate time of next train and minutes away
+    
+    var tFrequency = trainFreq
+    var firstTime = trainStart
+
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTime,"hh:mm").subtract(1, "years");
+  
+    // Current Time
+    var currentTime = moment();
+  
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+  
+    // Time apart (remainder)
+    var tRemainder = diffTime % tFrequency; //difference between frequency and the remainder
+  
+    // Minute Until Train
+    var tMinutesTillTrain = tFrequency - tRemainder;
+  
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes")
+    var nextTrainTime = moment(nextTrain).format("hh:mm")
+
 // Add each train's data into the table
-  $("#trainTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFreq + "</td><td>" + "nextArrival" + "</td><td>" + "minutesAway" + "</td></tr>");
+  $("#trainTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFreq + " minutes" + "</td><td>" + nextTrainTime + "</td><td>" + tMinutesTillTrain + "</td></tr>");
 
   });
 
