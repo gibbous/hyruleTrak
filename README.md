@@ -1,3 +1,3 @@
 # hyruleTrak
 
-link to heroku: hyruletrak.herokuapp.com
+[link to heroku](https://hyruletrak.herokuapp.com)
